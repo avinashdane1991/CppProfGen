@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
 project(
-  cyclicapp
+  profilegenapp
   VERSION 0.1.0
   LANGUAGES CXX)
 
@@ -14,8 +14,8 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # if the app shall require a dependency like mosquitto the following two lines can be uncommented
-# set(CONAN_REQUIRES mosquitto/2.0.10)
-# set(CONAN_OPTIONS mosquitto:shared=True)
+#set(CONAN_REQUIRES mosquitto/2.0.10)
+#set(CONAN_OPTIONS mosquitto:shared=True)
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
   message(
@@ -44,12 +44,15 @@ conan_cmake_install(
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_library(${PROJECT_NAME} SHARED src/app.cpp)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_link_libraries(${PROJECT_NAME} PRIVATE mosquitto)
 
 # the following line links dependencies like mosquitto to your target, uncomment if needed
-# target_link_libraries(${PROJECT_NAME} PRIVATE CONAN_LIB::mosquitto_mosquitto)
+#target_link_libraries(${PROJECT_NAME} PRIVATE CONAN_LIB::mosquitto_mosquitto)
 
-target_include_directories(${PROJECT_NAME} PRIVATE /home/vscode/mosaiq/sdk/include)
+target_include_directories(${PROJECT_NAME} PRIVATE /home/dev/mosaiq/sdk/include)
 target_link_options(${PROJECT_NAME} PRIVATE
                     $<$<CONFIG:RELEASE>:-static-libstdc++ -static-libgcc>)
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
