@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -static-libstdc++ -static-libgcc -shared -Wl,-soname,libprofilegenapp.so -o lib/libprofilegenapp.so CMakeFiles/profilegenapp.dir/src/app.cpp.o  -lmosquitto 
